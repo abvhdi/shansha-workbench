@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "title": "珊莎工作台插件源",
+  "description": "待办、资料、Agent 会话与业务数据库",
+  "plugins": [
+    {
+      "name": "shansha-workbench",
+      "title": "珊莎工作台",
+      "description": "待办、文件与会话联动，支持 Excel 导入、SQLite 业务表、表间关联与附件。",
+      "author": "abvhdi",
+      "homepage": "https://github.com/abvhdi/shansha-workbench",
+      "repository": {
+        "url": "https://github.com/abvhdi/shansha-workbench"
+      },
+      "metadata": {
+        "keywords": [
+          "珊莎",
+          "待办",
+          "数据库",
+          "订单",
+          "shansha",
+          "workbench",
+          "sqlite"
+        ]
+      },
+      "versions": [
+        {
+          "version": "0.1.80",
+          "publishTimestamp": 1793775987,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/abvhdi/shansha-workbench",
+            "commit": "431a614b8d6392b0a0e4371a1ef85c65ff6dcc6a"
+          },
+          "engines": {
+            "dsh": "0.2.0-rc.2 || 0.2.1-rc.2 || 0.2.1-rc.5"
+          }
+        }
+      ]
+    }
+  ]
+}
