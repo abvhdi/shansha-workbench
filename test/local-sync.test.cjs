@@ -1,0 +1,20 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),fsp=require('node:fs/promises'),path=require('node:path'),os=require('node:os'),crypto=require('node:crypto');
+test('files added and edited in a task folder are discovered; stale uploads never overwrite disk edits',async()=>{
+ const home=await fsp.mkdtemp(path.join(os.tmpdir(),'shansha-disk-sync-'));await fsp.mkdir(path.join(home,'.dsh'));
+ const context=vm.createContext({fs:fsp,path,os:{homedir:()=>home},crypto,Buffer,Uint8Array,TypertRemoteService:class{},Remote:()=>{}});
+ vm.runInContext(fs.readFileSync(path.join(__dirname,'../lib/index.js'),'utf8').replace(/^import .*;$/gm,'').replace(/export /g,'')+';globalThis.Files=makeFiles(TypertRemoteService,Remote);',context);
+ const store=new context.Files({}),task={id:'12345678-task',title:'客户报价',status:'todo',sessionId:'s'};store.workState={tasks:[task],projects:[],materials:[],events:[]};const root=(await store.info()).root,dir=path.join(root,'未归类','客户报价-12345678');await fsp.mkdir(path.join(dir,'子文件夹'),{recursive:true});
+ await fsp.writeFile(path.join(dir,'报价.md'),'first');await fsp.writeFile(path.join(dir,'子文件夹','补充.txt'),'nested');await fsp.writeFile(path.join(dir,'~$报价.xlsx'),'lock');
+ let manifest=await store.localManifest();assert.equal(manifest.files.length,2);const first=manifest.files.find(m=>m.name==='报价.md'),nested=manifest.files.find(m=>m.name==='补充.txt');assert.ok(first.id.startsWith('local:'));assert.ok(nested);const again=await store.localManifest();assert.equal(again.files.find(m=>m.name==='报价.md').id,first.id);
+ await fsp.writeFile(path.join(dir,'报价.md'),'latest externally saved');store.diskDirty=true;manifest=await store.localManifest();const current=manifest.files.find(m=>m.id===first.id);assert.notEqual(current.hash,first.hash);assert.equal(manifest.files.length,2);
+ const bytes=await store.localBytes({fileId:first.id,hash:current.hash,offset:0,length:524288});assert.equal(Buffer.from(bytes.data,'base64').toString(),'latest externally saved');
+ const stale=await store.begin({id:first.id,name:'报价.md',project:'未归类',task:'客户报价-12345678',size:5,hash:first.hash});assert.equal(stale.localChanged,true);assert.equal(await fsp.readFile(path.join(dir,'报价.md'),'utf8'),'latest externally saved');
+ await store.prune({ids:[]});assert.equal(await fsp.readFile(path.join(dir,'报价.md'),'utf8'),'latest externally saved');
+ await assert.rejects(store.localBytes({fileId:first.id,hash:first.hash,offset:0,length:12}),/已经更新/);
+ const nestedRequest=await store.begin({id:nested.id,name:'补充.txt',project:'未归类',task:'客户报价-12345678',hash:nested.hash,localHash:nested.hash,size:nested.size});assert.ok(nestedRequest.path.includes('子文件夹'));
+ await fsp.writeFile(path.join(dir,'正式报价.md'),'keep existing');
+ const renamed=await store.renameFile({fileId:first.id,name:'正式报价.md'});assert.equal(renamed.name,'正式报价（2）.md');assert.equal(await fsp.readFile(path.join(dir,'正式报价.md'),'utf8'),'keep existing');assert.equal(await fsp.readFile(path.join(dir,renamed.name),'utf8'),'latest externally saved');await assert.rejects(fsp.access(path.join(dir,'报价.md')));
+ const afterRename=await store.localManifest();assert.equal(afterRename.files.find(m=>m.id===first.id).name,renamed.name);assert.equal(afterRename.files.filter(m=>m.id===first.id).length,1);
+ await assert.rejects(store.renameFile({fileId:first.id,name:'../escape.md'}),/特殊符号/);await assert.rejects(store.renameFile({fileId:first.id,name:'changed.exe'}),/格式保持/);
+ store.diskWatcher?.close();assert.ok(home.startsWith(path.resolve(os.tmpdir())+path.sep));await fsp.rm(home,{recursive:true,force:true});
+});

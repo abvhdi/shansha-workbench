@@ -1,0 +1,2 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+test('order assistant source is retained but removed from active plugin UI and bundle',()=>{const read=n=>fs.readFileSync(path.join(__dirname,'../',n),'utf8');assert.doesNotMatch(read('src/ui.js'),/OrderExportAssistant|文件工坊功能/);assert.doesNotMatch(read('lib/client.js'),/ORDER_ASSISTANT_HTML|function importWorkbook/);assert.ok(fs.existsSync(path.join(__dirname,'../tools/order-export/main.js')));});

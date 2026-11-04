@@ -1,0 +1,9 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+test('workspace switch offers the current conversation without silently relinking or treating a moved conversation as new',()=>{
+ let selected='new';const rows={old:{title:'原讨论',cwd:'C:/old'},new:{title:'报价讨论',cwd:'C:/new'}};
+ const ctx={uiWorkspace:{selection:{getSnapshot:()=>({sessionId:selected})}},workspaces:{list:{getSnapshot:()=>({items:[{workspaceId:'a',sessionIds:['old']},{workspaceId:'b',sessionIds:['new']}]})}},sessions:{list:{getSnapshot:()=>({byId:rows})}}};
+ const v=vm.createContext({ctx});vm.runInContext(fs.readFileSync(path.join(__dirname,'../src/bridge.js'),'utf8')+';globalThis.b=new HarnessBridge(ctx,{})',v);
+ const task={sessionId:'old'};assert.equal(v.b.workspaceMismatch(task).sessionId,'new');assert.equal(task.sessionId,'old');selected='old';assert.equal(v.b.workspaceMismatch(task),null);selected='missing';assert.equal(v.b.workspaceMismatch(task),null);selected='new';ctx.workspaces.list.getSnapshot=()=>({items:[]});rows.new.cwd='c:\\old\\';assert.equal(v.b.workspaceMismatch(task),null);
+});
+test('session creation explicitly chooses the default workspace and navigation rejects a different selection',()=>{const ctx={workspaces:{list:{getSnapshot:()=>({defaultWorkspaceId:'default',items:[{workspaceId:'other'},{workspaceId:'default'}]})}},uiWorkspace:{openSession:()=>{},selection:{getSnapshot:()=>({sessionId:'wrong'})}}};const v=vm.createContext({ctx});vm.runInContext(fs.readFileSync(path.join(__dirname,'../src/bridge.js'),'utf8')+';globalThis.b=new HarnessBridge(ctx,{})',v);assert.equal(v.b.sessionOptions().workspaceId,'default');assert.equal(v.b.sessionOptions({workspaceId:'other'}).workspaceId,'other');assert.throws(()=>v.b.revealSession('linked'),/跳转不一致/);ctx.workspaces.list.getSnapshot=()=>({items:[]});assert.throws(()=>v.b.sessionOptions(),/尚未加载/);});
+

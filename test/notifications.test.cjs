@@ -1,0 +1,5 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('fs'),path=require('path');const read=n=>fs.readFileSync(path.join(__dirname,'../src/'+n+'.js'),'utf8');
+test('ordinary success notices are silent and errors expire without a close action',async()=>{
+ const timers=new Map();let id=0;const repo={list:async()=>[],close:()=>{}},c=vm.createContext({React:{memo:f=>f},repo,setTimeout:(fn,ms)=>{timers.set(++id,{fn,ms});return id;},clearTimeout:id=>timers.delete(id)});vm.runInContext(read('core')+'\n'+read('plugin')+'\n'+read('ui')+';globalThis.model=createModel(repo,{});globalThis.visible=shouldShowWorkbenchNotice;',c);try{c.model.notice('已新建完成。');assert.equal(c.visible(c.model.snapshot()),false);c.model.fail(Error('保存失败，请重试'));assert.equal(c.visible(c.model.snapshot()),true);const timer=Array.from(timers.values()).find(t=>t.ms===8000);assert.ok(timer);timer.fn();assert.equal(c.model.snapshot().message,'');assert.equal(c.visible(c.model.snapshot()),false);}finally{await c.model.dispose();}
+});
+

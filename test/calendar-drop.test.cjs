@@ -1,0 +1,7 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+test('calendar drop seeds a reminder date but waits for an explicit time and save',()=>{
+ let hooks=[],i=0,saves=0;const React={memo:f=>f,useEffect:()=>{},useRef:()=>({current:false}),useState:v=>{const n=i++;if(!(n in hooks))hooks[n]=v;return [hooks[n],v=>hooks[n]=v];}},h=(tag,props,...children)=>({tag,props:props||{},children:children.flat(Infinity)}),model={saveReminder:()=>saves++},task={id:'t',title:'报价'};
+ const c=vm.createContext({React,h,Date});vm.runInContext(['core','ui'].map(n=>fs.readFileSync(path.join(__dirname,'../src/'+n+'.js'),'utf8')).join('\n')+';globalThis.api={CalendarView,ReminderEditor}',c);
+ const find=(n,p)=>n&&typeof n==='object'?(p(n)?n:n.children?.map(x=>find(x,p)).find(Boolean)):null,render=()=>{i=0;return c.api.CalendarView({tasks:[],unreminded:[task],model,onOpen:()=>{}});};let tree=render();find(tree,n=>n.props.draggable).props.onDragStart({dataTransfer:{setData(){}}});tree=render();const day=find(tree,n=>n.props.className==='swb-calendar-day');day.props.onDrop({preventDefault(){}});tree=render();const editor=find(tree,n=>n.tag===c.api.ReminderEditor);assert.equal(editor.props.initialDate,day.props['aria-label']);assert.equal(saves,0);
+ hooks=[];i=0;tree=c.api.ReminderEditor({...editor.props});assert.equal(find(tree,n=>n.props.type==='time').props.value,'');assert.equal(find(tree,n=>n.props.type==='submit').props.disabled,true);
+});
