@@ -9,7 +9,7 @@ fs.mkdirSync(path.join(root, 'lib'), {recursive:true});
 fs.writeFileSync(path.join(root,'lib/client.js'),output);
 fs.copyFileSync(path.join(root,'src/host.js'),path.join(root,'lib/index.js'));
 fs.copyFileSync(path.join(root,'src/native-open-path.js'),path.join(root,'lib/native-open-path.js'));
-for(const name of ['database.js','sqlite-store.js','coordinator.js','database-formulas.js','database-relations.js','database-attachments.js','database-groups.js'])fs.copyFileSync(path.join(root,'src',name),path.join(root,'lib',name));
+for(const name of ['database.js','sqlite-runtime.js','sqlite-store.js','coordinator.js','database-formulas.js','database-relations.js','database-attachments.js','database-groups.js'])fs.copyFileSync(path.join(root,'src',name),path.join(root,'lib',name));
 fs.cpSync(path.join(root,'src/vendor'),path.join(root,'lib/vendor'),{recursive:true});
 if(process.platform==='win32'){
   const compiler=path.join(process.env.WINDIR||'C:\\Windows','Microsoft.NET','Framework64','v4.0.30319','csc.exe');

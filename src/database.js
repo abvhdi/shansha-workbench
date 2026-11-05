@@ -1,13 +1,12 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import {fileURLToPath} from 'node:url';
+export {bundledSQLite} from './sqlite-runtime.js';
 import {sqliteRun,sqliteText as q} from './sqlite-store.js';
 import {groupSchema,groupPlan,groupSQL,setupSalesGroups} from './database-groups.js';
 import {attachmentSchema,enrichAttachments,attachmentPlan,attachmentSQL} from './database-attachments.js';
 import {relationSchema,relationCatalog,enrichLinkedRows,validateRelationRows,relationPlan,relationSQL,relationDeleteGuard,relationColumnGuard,decorateRelationPlan,readRelatedRecord,setupSales} from './database-relations.js';
 import {validateFormulas,calculateCells,parseFormula} from './database-formulas.js';
-export function bundledSQLite(){return fileURLToPath(new URL('./vendor/sqlite3.exe',import.meta.url));}
 
 // No model SQL is accepted. Agent edits are proposals; UI edits use versioned transactions.
 export class WorkDatabase {

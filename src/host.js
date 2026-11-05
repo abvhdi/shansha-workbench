@@ -7,7 +7,8 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import { execFile } from 'node:child_process';
 import {sqliteText as databaseQuote} from './sqlite-store.js';
-import { WorkDatabase, bundledSQLite } from './database.js';
+import { WorkDatabase } from './database.js';
+import { resolveSQLite } from './sqlite-runtime.js';
 import { installCoordinator } from './coordinator.js';
 async function replaceFile(temp,target){
  try{for(let attempt=0;;attempt++){try{await fs.rename(temp,target);return;}catch(error){if(!['EPERM','EACCES','EBUSY'].includes(error.code)||attempt>=5)throw error;await new Promise(resolve=>setTimeout(resolve,50*2**attempt));}}}
@@ -20,7 +21,7 @@ function makeFiles(TypertRemoteService,Remote){
 const initializers=[];
 const safe=value=>{const s=String(value||'').replace(/[<>:"/\\|?*\x00-\x1f]/g,'_').replace(/[. ]+$/,'').slice(0,100);return s&&!/^(con|prn|aux|nul|com[0-9]|lpt[0-9])(?:\.|$)/i.test(s)?s:'未命名';};
 class Files extends TypertRemoteService {
- async database(){if(!this.dataStore){const candidates=[bundledSQLite(),path.join(path.dirname(process.execPath),'sqlite3.exe'),'G:/Program Files (x86)/sqlite/sqlite-tools-win-x64-3540100/sqlite3.exe'];let executable;for(const candidate of candidates){try{await fs.access(candidate);executable=candidate;break;}catch{}}if(!executable)throw Error('找不到 SQLite，请先安装或恢复 sqlite3.exe 的位置。');this.dataStore=new WorkDatabase(executable,path.join(os.homedir(),'Documents','珊莎数据库','工作数据.sqlite'));}return this.dataStore;}
+ async database(){if(!this.dataStore){const executable=await resolveSQLite();this.dataStore=new WorkDatabase(executable,path.join(os.homedir(),'Documents','珊莎数据库','工作数据.sqlite'));}return this.dataStore;}
  async databaseStatus(){return (await this.database()).status();}
  async databaseCatalog(){return (await this.database()).catalog();}
  async databaseRead(request){return (await this.database()).read(request);}

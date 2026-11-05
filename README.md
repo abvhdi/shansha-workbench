@@ -2,7 +2,7 @@
 
 **把事情记下来，接着做。**
 
-DeepSeek Harness 的 Windows 本地工作台插件，把待办、资料、关联会话和业务数据放在一起。当前测试版 **0.1.80**。
+DeepSeek Harness 的 Windows 本地工作台插件，把待办、资料、关联会话和业务数据放在一起。当前测试版 **0.1.81**。
 
 ## 安装
 
@@ -18,7 +18,7 @@ https://raw.githubusercontent.com/abvhdi/shansha-workbench/main/market.json
 
 ### 下载安装包
 
-到 [最新发布页](https://github.com/abvhdi/shansha-workbench/releases/latest) 下载 `shansha-workbench-0.1.80.tgz`，通过 Harness 插件管理器升级；也可将安装包和 [INSTALL-AI.md](INSTALL-AI.md) 交给有本机操作能力的 Agent，要求保留现有数据后安装。
+到 [最新发布页](https://github.com/abvhdi/shansha-workbench/releases/latest) 下载 `shansha-workbench-0.1.81.tgz`，通过 Harness 插件管理器升级；也可将安装包和 [INSTALL-AI.md](INSTALL-AI.md) 交给有本机操作能力的 Agent，要求保留现有数据后安装。
 
 升级后请完整退出 Harness（包括托盘）再打开。已核对接口：`0.2.0-rc.2`、`0.2.1-rc.2`、`0.2.1-rc.5`；其他版本需另核对。
 
@@ -31,7 +31,11 @@ https://raw.githubusercontent.com/abvhdi/shansha-workbench/main/market.json
 - **表格整理**：一层自建分组、拖动归组和排序、双击重命名、拖动列标题换位置，顺序保存在本机。
 - **关联与附件**：关联记录按名称显示；取消关联保留名称为普通文字；每条记录可添加本地附件。
 
-## 本次数据库更新
+## 0.1.81 数据库启动修复
+
+修复 macOS 错误执行 Windows sqlite3.exe 导致 EACCES。按操作系统选择 SQLite 并检查 JSON 支持。Mac 优先使用系统 SQLite，然后尝试 Homebrew 与 PATH。尚未在真实 Mac 验证；文件打开等功能仍有 Windows 专用依赖，不能保证整个插件兼容 macOS。
+
+## 此前数据库更新
 
 补齐了表间关联、记录附件、分组管理、表格排序、双击重命名、解除关联后删除表格，以及数据列拖动排序。Agent 的数据库写入仍须用户确认，分组和列移动不会改写记录内容。
 
@@ -44,7 +48,7 @@ https://raw.githubusercontent.com/abvhdi/shansha-workbench/main/market.json
 - 计算列目前支持同表数字四则运算，不是完整 Excel 公式，也不自动做跨表汇总。
 - 业务数据库与文件需要单独备份；原待办 JSON 备份不等于全部业务数据备份。
 - 手机网页同步是可选实验功能，需要额外配置云端，不是安装后即用的跨端同步。
-- 183 项自动测试及隔离 React/SQLite 页面流程已验证；真实模型效果、其他电脑与宿主版本仍需实际试用。
+- 186 项自动测试及隔离 React/SQLite 页面流程已验证；真实模型效果、其他电脑与宿主版本仍需实际试用。
 
 ## 开发
 
