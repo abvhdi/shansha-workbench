@@ -4,7 +4,7 @@
 > 请阅读这个压缩包里的 INSTALL-AI.md，帮我把珊莎工作台安装到 DeepSeek Harness。保留我的待办、会话和资料，安装后检查是否成功。
 
 ## 安装目标
-这是 DeepSeek Harness 插件，不是独立软件。包名 shansha-workbench，版本以 package.json 为准（当前 0.1.81）；已核对接口的宿主版本为 0.2.0-rc.2、0.2.1-rc.2、0.2.1-rc.5，其他版本需检查接口兼容性，不能保证可用。
+这是 DeepSeek Harness 插件，不是独立软件。包名 shansha-workbench，版本以 package.json 为准（当前 0.1.82）；已核对接口的宿主版本为 0.2.0-rc.2、0.2.1-rc.2、0.2.1-rc.5、0.2.2-rc.1，其他版本需检查接口兼容性，不能保证可用。
 
 ## 操作步骤
 1. 找到本机 DeepSeek Harness，确认版本、正在使用的 profile 和插件管理功能。不要假定安装在某个盘符，也不要假定所有用户都使用 desktop profile。
@@ -48,3 +48,6 @@
 ## 0.1.81：数据库程序平台适配
 Windows 使用随包提供的 sqlite3.exe；macOS 优先使用 /usr/bin/sqlite3，然后检查 Homebrew 与 PATH；Linux 检查系统 SQLite。启动前验证可执行性与 JSON 支持，不再在 macOS/Linux 执行 Windows 程序。
 此修复只针对数据库运行程序选择。文件打开/复制等功能仍含 Windows 专用助手，不能据此宣称整个插件完整支持 macOS。尚未在真实 Mac 上验证；升级应保留全部用户数据库和资料，不要用 chmod 尝试运行 Windows exe。
+
+## 0.1.82：DSH 0.2.2-rc.1
+兼容声明包含该确切版本，RPC与会话契约检查及回归测试188项通过，真实UI与模型联动待验证。若安装仍显示0.1.0，检查当前profile依赖是否仍固定指向旧本地tgz，通过插件管理器安装本包，不删除用户数据。

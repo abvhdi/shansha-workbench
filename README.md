@@ -2,7 +2,7 @@
 
 **把事情记下来，接着做。**
 
-DeepSeek Harness 的 Windows 本地工作台插件，把待办、资料、关联会话和业务数据放在一起。当前测试版 **0.1.81**。
+DeepSeek Harness 的 Windows 本地工作台插件，把待办、资料、关联会话和业务数据放在一起。当前测试版 **0.1.82**。
 
 ## 安装
 
@@ -18,9 +18,9 @@ https://raw.githubusercontent.com/abvhdi/shansha-workbench/main/market.json
 
 ### 下载安装包
 
-到 [最新发布页](https://github.com/abvhdi/shansha-workbench/releases/latest) 下载 `shansha-workbench-0.1.81.tgz`，通过 Harness 插件管理器升级；也可将安装包和 [INSTALL-AI.md](INSTALL-AI.md) 交给有本机操作能力的 Agent，要求保留现有数据后安装。
+到 [最新发布页](https://github.com/abvhdi/shansha-workbench/releases/latest) 下载 `shansha-workbench-0.1.82.tgz`，通过 Harness 插件管理器升级；也可将安装包和 [INSTALL-AI.md](INSTALL-AI.md) 交给有本机操作能力的 Agent，要求保留现有数据后安装。
 
-升级后请完整退出 Harness（包括托盘）再打开。已核对接口：`0.2.0-rc.2`、`0.2.1-rc.2`、`0.2.1-rc.5`；其他版本需另核对。
+升级后请完整退出 Harness（包括托盘）再打开。已核对接口：`0.2.0-rc.2`、`0.2.1-rc.2`、`0.2.1-rc.5`、`0.2.2-rc.1`；其他版本需另核对。
 
 ## 可以做什么
 
@@ -30,6 +30,10 @@ https://raw.githubusercontent.com/abvhdi/shansha-workbench/main/market.json
 - **业务数据库**：导入 Excel/CSV、新建表格、直接改单元格、同表计算列，按需建立客户、订单、合同、发票等表之间的关联。
 - **表格整理**：一层自建分组、拖动归组和排序、双击重命名、拖动列标题换位置，顺序保存在本机。
 - **关联与附件**：关联记录按名称显示；取消关联保留名称为普通文字；每条记录可添加本地附件。
+
+## 0.1.82：DSH 0.2.2-rc.1 兼容
+
+核对新版宿主的会话创建、引用、派发、RPC参数及工作区文件接口，加入精确兼容声明。188项自动测试通过；真实新版UI和会话联动尚待验证。若仍显示0.1.0，请通过插件管理器升级到本发布包，旧的本地tgz来源不会自动变成新版。
 
 ## 0.1.81 数据库启动修复
 
@@ -48,7 +52,7 @@ https://raw.githubusercontent.com/abvhdi/shansha-workbench/main/market.json
 - 计算列目前支持同表数字四则运算，不是完整 Excel 公式，也不自动做跨表汇总。
 - 业务数据库与文件需要单独备份；原待办 JSON 备份不等于全部业务数据备份。
 - 手机网页同步是可选实验功能，需要额外配置云端，不是安装后即用的跨端同步。
-- 186 项自动测试及隔离 React/SQLite 页面流程已验证；真实模型效果、其他电脑与宿主版本仍需实际试用。
+- 188 项自动测试及隔离 React/SQLite 页面流程已验证；真实模型效果、其他电脑与宿主版本仍需实际试用。
 
 ## 开发
 
