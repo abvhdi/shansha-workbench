@@ -1,6 +1,6 @@
 {
   "name": "shansha-workbench",
-  "version": "0.1.84",
+  "version": "0.1.88",
   "description": "珊莎待办工作台：待办、材料与 DeepSeek Harness 会话关联",
   "type": "module",
   "main": "lib/index.js",
