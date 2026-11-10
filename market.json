@@ -25,6 +25,18 @@
       },
       "versions": [
         {
+          "version": "0.1.84",
+          "publishTimestamp": 1794295671,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/abvhdi/shansha-workbench",
+            "commit": "62e43ccb3a95ebe72907dbdfa28199b71bd63806"
+          },
+          "engines": {
+            "dsh": "0.2.0-rc.2 || 0.2.1-rc.2 || 0.2.1-rc.5 || 0.2.2-rc.1"
+          }
+        },
+        {
           "version": "0.1.83",
           "publishTimestamp": 1794280122,
           "source": {
