@@ -2,7 +2,7 @@
 
 **把事情记下来，接着做。**
 
-DeepSeek Harness 的 Windows 本地工作台插件，把待办、资料、关联会话和业务数据放在一起。当前测试版 **0.1.82**。
+DeepSeek Harness 的 Windows 本地工作台插件，把待办、资料、关联会话和业务数据放在一起。当前测试版 **0.1.83**。
 
 ## 安装
 
@@ -18,7 +18,7 @@ https://raw.githubusercontent.com/abvhdi/shansha-workbench/main/market.json
 
 ### 下载安装包
 
-到 [最新发布页](https://github.com/abvhdi/shansha-workbench/releases/latest) 下载 `shansha-workbench-0.1.82.tgz`，通过 Harness 插件管理器升级；也可将安装包和 [INSTALL-AI.md](INSTALL-AI.md) 交给有本机操作能力的 Agent，要求保留现有数据后安装。
+到 [最新发布页](https://github.com/abvhdi/shansha-workbench/releases/latest) 下载 `shansha-workbench-0.1.83.tgz`，通过 Harness 插件管理器升级；也可将安装包和 [INSTALL-AI.md](INSTALL-AI.md) 交给有本机操作能力的 Agent，要求保留现有数据后安装。
 
 升级后请完整退出 Harness（包括托盘）再打开。已核对接口：`0.2.0-rc.2`、`0.2.1-rc.2`、`0.2.1-rc.5`、`0.2.2-rc.1`；其他版本需另核对。
 

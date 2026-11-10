@@ -4,7 +4,7 @@
 > 请阅读这个压缩包里的 INSTALL-AI.md，帮我把珊莎工作台安装到 DeepSeek Harness。保留我的待办、会话和资料，安装后检查是否成功。
 
 ## 安装目标
-这是 DeepSeek Harness 插件，不是独立软件。包名 shansha-workbench，版本以 package.json 为准（当前 0.1.82）；已核对接口的宿主版本为 0.2.0-rc.2、0.2.1-rc.2、0.2.1-rc.5、0.2.2-rc.1，其他版本需检查接口兼容性，不能保证可用。
+这是 DeepSeek Harness 插件，不是独立软件。包名 shansha-workbench，版本以 package.json 为准（当前 0.1.83）；已核对接口的宿主版本为 0.2.0-rc.2、0.2.1-rc.2、0.2.1-rc.5、0.2.2-rc.1，其他版本需检查接口兼容性，不能保证可用。
 
 ## 操作步骤
 1. 找到本机 DeepSeek Harness，确认版本、正在使用的 profile 和插件管理功能。不要假定安装在某个盘符，也不要假定所有用户都使用 desktop profile。

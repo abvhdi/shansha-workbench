@@ -1,7 +1,7 @@
 {
   "name": "shansha-workbench",
-  "version": "0.1.82",
-  "description": "鐝婅帋寰呭姙宸ヤ綔鍙帮細寰呭姙銆佹潗鏂欎笌 DeepSeek Harness 浼氳瘽鍏宠仈",
+  "version": "0.1.83",
+  "description": "珊莎待办工作台：待办、材料与 DeepSeek Harness 会话关联",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
