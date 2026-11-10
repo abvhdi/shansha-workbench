@@ -12,3 +12,17 @@ function TaskLinkCards({phase,block,model}){
 function installTaskLinkCards(ctx,model){
  ctx.slots.inject('tool.call.toolview',()=>ctx.slots.register({name:'tool.call.toolview',key:'show_shansha_task_links',inject:()=>({model})},TaskLinkCards));
 }
+
+function linkedTasksForSession(tasks,sessionId){return sessionId?(tasks||[]).filter(t=>t.sessionId===sessionId&&!t.deletedAt&&t.kind!=='record'):[];}
+function LinkedTaskHeader({sessionId,model}){
+ const state=React.useSyncExternalStore(model.subscribe,model.snapshot,model.snapshot),[busy,setBusy]=React.useState(false),[error,setError]=React.useState('');
+ React.useEffect(()=>{model.refresh(false).catch(()=>{});},[sessionId]);
+ const tasks=linkedTasksForSession(state.tasks,sessionId);
+ if(!tasks.length)return null;
+ const open=async id=>{if(busy)return;setBusy(true);setError('');try{await model.openTaskFromChat(id);}catch(e){setError(e.message||'待办暂时无法打开');}finally{setBusy(false);}};
+ const button=t=>h('button',{type:'button',key:t.id,className:'swb-linked-task-button',disabled:busy,title:'打开待办：'+t.title,onClick:()=>open(t.id)},'↗ ',t.title);
+ return h('div',{className:'swb-linked-task-header'},tasks.length===1?button(tasks[0]):h('details',null,h('summary',null,'关联待办 ▾'),h('div',{className:'swb-linked-task-menu'},tasks.map(button))),error&&h('span',{role:'alert',className:'swb-linked-task-error'},error));
+}
+function installLinkedTaskHeader(ctx,model){
+ ctx.slots.inject('conversation.session.header.actions',()=>ctx.slots.register({name:'conversation.session.header.actions',id:'shansha-linked-task',order:-20,inject:()=>({model})},LinkedTaskHeader));
+}

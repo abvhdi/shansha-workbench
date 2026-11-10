@@ -201,3 +201,9 @@
 .swb-db-draggable-table{position:relative}.swb-db-drop-before:before,.swb-db-drop-after:after{content:"";position:absolute;left:14px;right:5px;height:2px;background:color-mix(in srgb,var(--swb-text) 38%,var(--swb-bg));border-radius:2px;pointer-events:none;z-index:2}.swb-db-drop-before:before{top:0}.swb-db-drop-after:after{bottom:0}
 
 .swb-db-column-title{cursor:grab}.swb-db-column-title:active{cursor:grabbing}.swb-db-grid thead th.swb-db-column-drop-before:before,.swb-db-grid thead th.swb-db-column-drop-after:after{content:"";position:absolute;top:0;bottom:0;width:2px;background:color-mix(in srgb,var(--swb-text) 45%,var(--swb-bg));pointer-events:none;z-index:4}.swb-db-column-drop-before:before{left:0}.swb-db-column-drop-after:after{right:0}
+
+.swb-linked-task-header{position:relative;display:flex;align-items:center;gap:8px;font-size:13px;min-width:0;max-width:260px}
+.swb-linked-task-header button,.swb-linked-task-header summary{font:inherit;color:inherit;background:rgba(128,128,128,.09);border:0;border-radius:7px;padding:6px 10px;cursor:pointer;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.swb-linked-task-header button:hover,.swb-linked-task-header button:focus-visible,.swb-linked-task-header summary:hover,.swb-linked-task-header summary:focus-visible{background:rgba(128,128,128,.18);outline:none}
+.swb-linked-task-menu{position:absolute;top:100%;right:0;z-index:40;padding:6px;background:var(--background,#fff);box-shadow:0 4px 18px #0002;border-radius:9px;display:grid;gap:4px}
+.swb-linked-task-error{font-size:12px;color:#a33;max-width:200px}

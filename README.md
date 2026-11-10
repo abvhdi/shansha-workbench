@@ -2,7 +2,7 @@
 
 **把事情记下来，接着做。**
 
-DeepSeek Harness 的 Windows 本地工作台插件，把待办、资料、关联会话和业务数据放在一起。当前测试版 **0.1.83**。
+DeepSeek Harness 的 Windows 本地工作台插件，把待办、资料、关联会话和业务数据放在一起。当前测试版 **0.1.84**。
 
 ## 安装
 
@@ -18,7 +18,7 @@ https://raw.githubusercontent.com/abvhdi/shansha-workbench/main/market.json
 
 ### 下载安装包
 
-到 [最新发布页](https://github.com/abvhdi/shansha-workbench/releases/latest) 下载 `shansha-workbench-0.1.83.tgz`，通过 Harness 插件管理器升级；也可将安装包和 [INSTALL-AI.md](INSTALL-AI.md) 交给有本机操作能力的 Agent，要求保留现有数据后安装。
+到 [最新发布页](https://github.com/abvhdi/shansha-workbench/releases/latest) 下载 `shansha-workbench-0.1.84.tgz`，通过 Harness 插件管理器升级；也可将安装包和 [INSTALL-AI.md](INSTALL-AI.md) 交给有本机操作能力的 Agent，要求保留现有数据后安装。
 
 升级后请完整退出 Harness（包括托盘）再打开。已核对接口：`0.2.0-rc.2`、`0.2.1-rc.2`、`0.2.1-rc.5`、`0.2.2-rc.1`；其他版本需另核对。
 
@@ -64,3 +64,7 @@ node build.cjs
 ```
 
 部分宿主兼容测试依赖本机 Harness 安装目录；Windows 原生文件打开助手的源码位于 `src/native-open.cs`。第三方组件与许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。历史改动见 [CHANGELOG.md](CHANGELOG.md)。
+
+## 0.1.84
+
+会话顶部新增关联待办入口：单条直接显示名称，多条展开选择；未关联、已删除或随手记不显示。点击打开已有待办页面，不新建会话、不发送消息、不调用模型。189项自动测试及真实React隔离浏览器交互测试通过；真实宿主界面仍需试用。

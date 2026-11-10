@@ -118,6 +118,7 @@ function apply(ctx) {
     return model.cleanLegacyTrash();
   }).then(()=>model.recoverRescue()).then(()=>bridge.syncLocal?.(repo)).catch(error=>{console.error('珊莎工作台初始化失败',error);model.fail(error);});
   installTaskLinkCards(ctx,model);
+  installLinkedTaskHeader(ctx,model);
   ctx.inject?.(['sidebarRight','sidebarRightTabs'],child=>installDatabasePanel(child,model));
   ctx.slots.inject('main',()=>{
     const dispose=ctx.slots.register({name:'main',key:PANEL_ID,inject:()=>({model})},WorkbenchPage);
