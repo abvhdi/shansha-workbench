@@ -6,7 +6,7 @@
     {
       "name": "shansha-workbench",
       "title": "珊莎工作台",
-      "description": "待办、文件与会话联动，支持 Excel 导入、SQLite 业务表、表间关联与附件。",
+      "description": "待办、文件、Agent 会话与业务数据联动，支持 Word/Excel 模板填写核对。",
       "author": "abvhdi",
       "homepage": "https://github.com/abvhdi/shansha-workbench",
       "repository": {
@@ -24,6 +24,18 @@
         ]
       },
       "versions": [
+        {
+          "version": "0.1.112",
+          "publishTimestamp": 1794403828,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/abvhdi/shansha-workbench",
+            "commit": "044fc5b2950cb66332c6612d7e74c3dc12ca43e7"
+          },
+          "engines": {
+            "dsh": "0.2.0-rc.2 || 0.2.1-rc.2 || 0.2.1-rc.5 || 0.2.2-rc.1"
+          }
+        },
         {
           "version": "0.1.88",
           "publishTimestamp": 1794297728,
