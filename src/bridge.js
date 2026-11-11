@@ -46,7 +46,7 @@ class HarnessBridge {
   }
   async nativeCall(method,args={}) {
     const connection=this.ctx.get('connection');if(!connection?.rpc)throw new Error('本地文件服务连接不可用，请重启 Harness。');
-    const controller=new AbortController(),interactive=method==='shanshaFiles/open'||method==='directoryPicker/pick',timeout=this.rpcTimeout|| (interactive?300000:['shanshaFiles/mobileConnect','shanshaFiles/mobileInbox'].includes(method)?45000:['shanshaFiles/databaseExtract','shanshaFiles/suggestTaskSteps'].includes(method)?30000:method==='shanshaFiles/parseTaskInput'?25000:15000);
+    const controller=new AbortController(),interactive=method==='shanshaFiles/open'||method==='directoryPicker/pick',timeout=this.rpcTimeout|| (interactive?300000:method==='shanshaFiles/templatesIdentify'?60000:['shanshaFiles/mobileConnect','shanshaFiles/mobileInbox'].includes(method)?45000:['shanshaFiles/databaseExtract','shanshaFiles/suggestTaskSteps'].includes(method)?30000:method==='shanshaFiles/parseTaskInput'?25000:15000);
     try{return remoteValue(await withTimeout(connection.rpc.call('/api',method,{args},controller.signal),timeout,'本地文件操作超时，请稍后重试。'));}catch(error){if(method.startsWith('shanshaFiles/database')&&/HTTP 404|status.?404/i.test(error?.message||''))throw new Error('数据库的新接口尚未加载。请先保留未保存的输入，完整退出 Harness（包括托盘）再打开；仅刷新页面无效。');if(method.startsWith('shanshaFiles/knowledge')&&/HTTP 404|status.?404/i.test(error?.message||''))throw new Error('知识库服务尚未加载。请完整退出 Harness（包括托盘）后重新打开，再进入知识库；仅刷新页面不会加载新服务。');throw error;}finally{controller.abort();}
   }
   async backupInfo(){return this.nativeCall('shanshaFiles/backupInfo');}

@@ -56,6 +56,7 @@ function createModel(repo,bridge) {
     addToDatabase:async(text,source={})=>{const body=String(text||'').trim();if(!body)throw new Error('请先选中需要整理的内容。');if(body.length>20000)throw new Error('选中内容较长，请分段整理（每次最多两万字）。');model.revealWorkbench?.();publish({databaseCapture:{id:crypto.randomUUID(),text:body,source}});},
     closeDatabaseCapture:()=>publish({databaseCapture:null}),
     taskToDatabase:async id=>{await model.flushDraft(id);const task=(await repo.list()).find(t=>t.id===id&&!t.deletedAt);if(!task)throw new Error('这条内容已经不存在。');await model.addToDatabase([task.title,task.description].filter(Boolean).join('\n\n'),{taskId:task.id,title:task.title});},
+    showTemplateDialog:file=>{model.templateSource=file;model.area='files';model.selected='';publish({templateNavigation:{token:crypto.randomUUID()}});model.revealWorkbench?.();},
     openDatabaseFromChat:async id=>{if(model.databaseEditing)throw Error('请先完成表格中正在编辑的内容。');const catalog=await bridge.nativeCall('shanshaFiles/databaseCatalog');if(!catalog.tables?.some(t=>t.id===id))throw Error('这张表已删除，请重新查询。');model.databaseMemory={recent:model.databaseMemory?.recent||[],tableId:id};model.area='database';model.selected='';publish({databaseNavigation:{id,token:crypto.randomUUID()}});model.revealWorkbench?.();},
     openTaskFromChat:async id=>{await model.refresh();const task=state.tasks.find(t=>t.id===id&&!t.deletedAt&&t.kind!=='record');if(!task)throw Error('这条待办已删除或已改为随手记，无法打开。');model.selected=id;publish({taskNavigation:{id,token:crypto.randomUUID()}});model.revealWorkbench?.();},
     openTaskChat:async id=>{model.chatOpenings ||= new Map();if(model.chatOpenings.has(id))return model.chatOpenings.get(id);const run=async()=>{const task=(await repo.list()).find(t=>t.id===id&&!t.deletedAt&&t.kind!=='record');if(!task)throw Error('这条待办已删除或已改为随手记。');const materials=task.sessionId?[]:await repo.materials(id);await model.startCollaboration(id,materials);};const pending=globalThis.navigator?.locks?.request?navigator.locks.request('shansha-task-chat:'+id,run):run();model.chatOpenings.set(id,pending);try{return await pending;}finally{model.chatOpenings.delete(id);}},
@@ -121,6 +122,8 @@ function apply(ctx) {
   installTaskLinkCards(ctx,model);
   installTaskAnswerLinks(ctx,model);
   installDatabaseAnswerLinks(ctx,model);
+  installTemplateAnswerLinks(ctx,model);
+  installQuoteDraftCards(ctx,model);
   installLinkedTaskHeader(ctx,model);
   ctx.inject?.(['sidebarRight','sidebarRightTabs'],child=>installDatabasePanel(child,model));
   ctx.slots.inject('main',()=>{
